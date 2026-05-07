@@ -1,12 +1,20 @@
 import json
 
 import websocket
+import bitstamp.client
 
-def comprar():
-    print("Comprei bitcoin")
+import credentials
 
-def vender():
-    print("Vendi Bitcoin")
+def client():
+    return bitstamp.client.Trading(username=credentials.USERNAME, key=credentials.KEY, secret=credentials.SECRET) # JAMAIS colocar suas chaves, api keys, segredos etc. dentro de um script!!!
+
+def buy(amount):
+    trading_client = client()
+    trading_client.buy_market_order(amount)
+
+def sell(amount):
+    trading_client = client()
+    trading_client.sell_market_order(amount)
 
 def on_message(ws, message):
     parsed_message = json.loads(message)
@@ -23,9 +31,9 @@ def on_message(ws, message):
         print(f"Price of {amount_sold_str} BTC: ${price * amount_sold:.2f}")
 
         if price >= 80115:
-            vender()
+            sell(1)
         elif price <= 80100:
-            comprar()
+            buy(1)
         else:
             print("Aguardar.")
 
