@@ -3,10 +3,10 @@ import json
 import websocket
 
 def comprar():
-    pass
+    print("Comprei bitcoin")
 
 def vender():
-    pass
+    print("Vendi Bitcoin")
 
 def on_message(ws, message):
     parsed_message = json.loads(message)
@@ -21,6 +21,13 @@ def on_message(ws, message):
         print(f"BTC Price: ${price}")
         print(f"Amount Sold: {amount_sold_str}")
         print(f"Price of {amount_sold_str} BTC: ${price * amount_sold:.2f}")
+
+        if price >= 80115:
+            vender()
+        elif price <= 80100:
+            comprar()
+        else:
+            print("Aguardar.")
 
 def on_error(ws, error):
     print(error)
